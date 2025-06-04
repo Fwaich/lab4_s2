@@ -2,10 +2,10 @@
 #include <functional>
 #include <sstream>
 #include "core/BinaryTree.hpp"
-#include "core/Traversal.hpp"
+#include "core/Sequence.hpp"
 
 template<typename T>
-class TreeSequence {
+class TreeSequence : public Sequence<T> {
 private:
     BinaryTree<T>* tree;
     
@@ -16,28 +16,43 @@ public:
         delete tree;
     }
 
-    void add(T value) {
+    Sequence<T>* add(T value) override {
         tree->add(value);
+        return this;
     }
 
-    void map(std::function<void(T&)> func){
-        TreeSequence<T>* result = new TreeSequence<int>;
-
+    Sequence<T>* set_traversal(TreeTraversal<T>* new_traversal) override {
+        tree->set_traversal(new_traversal);
+        return this;
     }
 
-    // bool contains(T value) const {
-    //     bool found = false;
-    //     tree->traverse([&found, value](T& data){
-    //         if (data == value) found = true;
-    //     });
-    //     return found;
-    // }
+    Sequence<T>* map(std::function<void(T&)> func) override {
+        tree->traverse(func);
+        return this;
+    }
 
-    // void merge(const TreeSequence<T>& other) {
-    //     tree->traverse(other.tree->get_root(), [this](T& value){
-    //         this->add(value);
-    //     });
-    // }
+    Sequence<T>* merge(Sequence<T>* other) override {
+        // tree->traverse(other.tree->get_root(), [this](T& value){
+        //     this->add(value);
+        // });
+        return this;
+    }
+
+    bool contains(T value) const override {
+        bool found = false;
+        tree->traverse([&found, value](T& data){
+            if (data == value) found = true;
+        });
+        return found;
+    }
+
+    bool contains_subtree(Sequence<T>* other) const override {
+        //для этого должен быть один обход
+        std::string main_str = this->to_string();
+        std::string sub_str = other->to_string();
+        return main_str.find(sub_str) != -1;
+    }
+    
 
     std::string to_string() const {
         std::ostringstream oss;
@@ -47,9 +62,10 @@ public:
         return oss.str();
     }
 
-    // bool contains_subtree(const TreeSequence<T>& other) const {
-    //     std::string main_str = this->to_string();
-    //     std::string sub_str = other.to_string();
-    //     return main_str.find(sub_str) != std::string::npos;
-    // }
+    TreeSequence<T>& operator+=(const T& value) {
+        this->add(value);
+        return *this;
+    }
+
 };
+

@@ -3,44 +3,42 @@
 #include "core/BinaryTree.hpp"
 #include "core/TreeNode.hpp"
 
-
-
-template<typename T>
+template <typename T>
 class TreeTraversal {
 public:
-    virtual void traverse(TreeNode<T>* node, std::function<void(T&)> func) = 0;
+    virtual void traverse(TreeNode<T>* root, std::vector<TreeNode<T>*>& result) = 0;
     virtual ~TreeTraversal() = default;
 };
 
-template<typename T>
-class InOrderTraversal : public TreeTraversal<T> { //LKP
+template <typename T>
+class InOrderTraversal : public TreeTraversal<T> {
 public:
-    void traverse(TreeNode<T>* node, std::function<void(T&)> func) override {
+    void traverse(TreeNode<T>* node, std::vector<TreeNode<T>*>& result) override {
         if (!node) return;
-        traverse(node->left, func);
-        func(node->data);
-        traverse(node->right, func);
+        traverse(node->left, result);
+        result.push_back(node);
+        traverse(node->right, result);
     }
 };
 
-template<typename T>
-class PreOrderTraversal : public TreeTraversal<T> { //KLP
+template <typename T>
+class PreOrderTraversal : public TreeTraversal<T> {
 public:
-    void traverse(TreeNode<T>* node, std::function<void(T&)> func) override {
+    void traverse(TreeNode<T>* node, std::vector<TreeNode<T>*>& result) override {
         if (!node) return;
-        func(node->data);
-        traverse(node->left, func);
-        traverse(node->right, func);
+        result.push_back(node);
+        traverse(node->left, result);
+        traverse(node->right, result);
     }
 };
 
-template<typename T>
-class PostOrderTraversal : public TreeTraversal<T> { //LPK
+template <typename T>
+class PostOrderTraversal : public TreeTraversal<T> {
 public:
-    void traverse(TreeNode<T>* node, std::function<void(T&)> func) override {
+    void traverse(TreeNode<T>* node, std::vector<TreeNode<T>*>& result) override {
         if (!node) return;
-        traverse(node->left, func);
-        traverse(node->right, func);
-        func(node->data);
+        traverse(node->left, result);
+        traverse(node->right, result);
+        result.push_back(node);
     }
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "core/TreeNode.hpp"
 #include "core/Traversal.hpp"
+#include "core/TreeIterator.hpp"
 
 template <typename T>
 class BinaryTree {
@@ -19,13 +20,24 @@ public:
         clear();
     }
 
-    void set_traversal(TreeTraversal<T> new_traversal){
+    TreeIterator<T> iterator() {
+        return TreeIterator<T>(root, traversal);
+    }
+
+    void set_traversal(TreeTraversal<T>* new_traversal){
         delete traversal;
         traversal = new_traversal;
     }
-    
-    void traverse(std::function<void(T&)> func) {
-        traversal->traverse(root, func);
+
+    bool contains(T value) {
+        TreeIterator<T> it = iterator();
+        while (it.has_next()) {
+            if (it.next() == value) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     void add(T value) {
