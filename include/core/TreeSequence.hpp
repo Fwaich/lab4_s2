@@ -1,6 +1,5 @@
 #pragma once
 #include <functional>
-#include <sstream>
 #include "core/BinaryTree.hpp"
 #include "core/Sequence.hpp"
 
@@ -11,6 +10,8 @@ private:
     
 public:
     TreeSequence() : tree(new BinaryTree<T>()) {}
+
+    TreeSequence(BinaryTree<T>* new_tree) : tree(new_tree) {}
 
     ~TreeSequence() {
         delete tree;
@@ -26,40 +27,17 @@ public:
         return this;
     }
 
-    Sequence<T>* map(std::function<void(T&)> func) override {
-        tree->traverse(func);
+    Sequence<T>* remove(const T& value) override {
+        tree->remove(value);
         return this;
     }
 
-    Sequence<T>* merge(Sequence<T>* other) override {
-        // tree->traverse(other.tree->get_root(), [this](T& value){
-        //     this->add(value);
-        // });
-        return this;
+    bool contains(const T& value) const override {
+        return tree->contains(value);
     }
 
-    bool contains(T value) const override {
-        bool found = false;
-        tree->traverse([&found, value](T& data){
-            if (data == value) found = true;
-        });
-        return found;
-    }
-
-    bool contains_subtree(Sequence<T>* other) const override {
-        //для этого должен быть один обход
-        std::string main_str = this->to_string();
-        std::string sub_str = other->to_string();
-        return main_str.find(sub_str) != -1;
-    }
-    
-
-    std::string to_string() const {
-        std::ostringstream oss;
-        tree->traverse([&oss](const T& data){
-            oss << data << " ";
-        });
-        return oss.str();
+    std::string to_string() const override {
+        return tree->to_string();
     }
 
     TreeSequence<T>& operator+=(const T& value) {

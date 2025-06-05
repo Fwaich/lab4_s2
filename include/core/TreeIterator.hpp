@@ -16,8 +16,7 @@ public:
         return index < nodes.size();
     }
 
-    T next() {
-        if (!has_next()) throw std::out_of_range("No more elements");
+    T& next() {
         return nodes[index++]->data;
     }
 

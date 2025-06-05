@@ -5,7 +5,7 @@
 
 int main() {
 
-    BinaryTree<int>* a = new BinaryTree<int>();
+    Sequence<int>* a = new TreeSequence<int>();
     
     a->add(1);
     a->add(2);
@@ -13,7 +13,12 @@ int main() {
 
     if (a->contains(2)) std::cout << "yes" << std::endl;
 
-    // std::cout << a->to_string() << std::endl;
+    std::cout << a->to_string() << std::endl;
+
+    a->remove(3);
+
+    std::cout << a->to_string() << std::endl;
         
+    delete a;
     return 0;
 }

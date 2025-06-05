@@ -1,4 +1,6 @@
 #pragma once
+#include <sstream>
+#include <functional>
 #include "core/TreeNode.hpp"
 #include "core/Traversal.hpp"
 #include "core/TreeIterator.hpp"
@@ -18,6 +20,7 @@ public:
 
     ~BinaryTree() {
         clear();
+        delete traversal;
     }
 
     TreeIterator<T> iterator() {
@@ -29,19 +32,35 @@ public:
         traversal = new_traversal;
     }
 
-    bool contains(T value) {
-        TreeIterator<T> it = iterator();
+    bool contains(const T& value) {
+        auto it = iterator();
         while (it.has_next()) {
             if (it.next() == value) {
                 return true;
             }
         }
         return false;
+    }
 
+    std::string to_string() {
+        std::ostringstream oss;
+        auto it = iterator();
+        while (it.has_next()) {
+            oss << it.next() << ' ';
+        }
+        return oss.str();
     }
 
     void add(T value) {
         root = add_r(root, value);
+    }
+
+    void remove(const T& value) {
+        bool found = false;
+        root = remove_r(root, value, found);
+        if (!found) {
+            throw std::runtime_error("Element not found");
+        }
     }
 
     void clear() {
@@ -64,21 +83,39 @@ private:
         delete node;
     }
 
+    tnode* remove_r(tnode* node, const T& value, bool& found) {
+        if (!node) return nullptr;
+    
+        if (value < node->data) {
+            node->left = remove_r(node->left, value, found);
+        } else if (value > node->data) {
+            node->right = remove_r(node->right, value, found);
+        } else {
+            found = true;
+    
+            // случай 1: один или ноль потомков
+            if (!node->left) {
+                tnode* right = node->right;
+                delete node;
+                return right;
+            } else if (!node->right) {
+                tnode* left = node->left;
+                delete node;
+                return left;
+            }
+    
+            // случай 2: два потомка
+            tnode* min_node = find_min_node(node->right);
+            node->data = min_node->data;
+            node->right = remove_r(node->right, min_node->data, found);
+        }
+        return node;
+    }
+
 };
 
-
-// template <typename T>
-// bool BinaryTree<T>::match_tree_r(tnode* n1, tnode* n2) const {
-//     if (!n1 && !n2) return true; 
-//     if (!n1 || !n2) return false;
-//     if (n1->data != n2->data) return false;
-//     return match_tree_r(n1->left, n2->left) && match_tree_r(n1->right, n2->right);
-// }
-
-// template <typename T>
-// bool BinaryTree<T>::contains_subtree_r(tnode* main, tnode* sub) const {
-//     if (!sub) return true;     // пустое дерево — всегда поддерево
-//     if (!main) return false;
-//     if (match_tree_r(main, sub)) return true;
-//     return contains_subtree_r(main->left, sub) || contains_subtree_r(main->right, sub);
-// }
+template <typename T>
+TreeNode<T>* find_min_node(TreeNode<T>* node) {
+    while (node->left) node = node->left;
+    return node;
+}
