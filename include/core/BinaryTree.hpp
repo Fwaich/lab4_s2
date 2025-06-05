@@ -19,12 +19,25 @@ public:
     : root(nullptr), traversal(new_traversal) {}
 
     ~BinaryTree() {
-        clear();
+        clear_r(root);
+        root = nullptr;
         delete traversal;
+    }
+
+    void add(T value) {
+        root = add_r(root, value);
     }
 
     TreeIterator<T> iterator() {
         return TreeIterator<T>(root, traversal);
+    }
+
+    void remove(const T& value) {
+        bool found = false;
+        root = remove_r(root, value, found);
+        if (!found) {
+            throw std::runtime_error("Element not found");
+        }
     }
 
     void set_traversal(TreeTraversal<T>* new_traversal){
@@ -42,6 +55,17 @@ public:
         return false;
     }
 
+    BinaryTree<T>* extract_subtree(const T& value) {
+        tnode* target_node = find_node_r(root, value);
+        if (!target_node) throw std::runtime_error(
+            "Element not found for subtree extraction"
+        );
+        BinaryTree<T>* subtree = new BinaryTree<T>(traversal->clone());
+        subtree->root = clone_subtree_r(target_node);
+        return subtree;
+    }
+    
+
     std::string to_string() {
         std::ostringstream oss;
         auto it = iterator();
@@ -49,23 +73,6 @@ public:
             oss << it.next() << ' ';
         }
         return oss.str();
-    }
-
-    void add(T value) {
-        root = add_r(root, value);
-    }
-
-    void remove(const T& value) {
-        bool found = false;
-        root = remove_r(root, value, found);
-        if (!found) {
-            throw std::runtime_error("Element not found");
-        }
-    }
-
-    void clear() {
-        clear_r(root);
-        root = nullptr;
     }
 
 private:
@@ -83,6 +90,21 @@ private:
         delete node;
     }
 
+    tnode* find_node_r(tnode* node, const T& value) {
+        if (!node) return nullptr;
+        if (value == node->data) return node;
+        if (value < node->data) return find_node_r(node->left, value);
+        return find_node_r(node->right, value);
+    }
+
+    tnode* clone_subtree_r(tnode* node) {
+        if (!node) return nullptr;
+        tnode* new_node = new tnode(node->data);
+        new_node->left = clone_subtree_r(node->left);
+        new_node->right = clone_subtree_r(node->right);
+        return new_node;
+    }
+
     tnode* remove_r(tnode* node, const T& value, bool& found) {
         if (!node) return nullptr;
     
@@ -93,7 +115,6 @@ private:
         } else {
             found = true;
     
-            // случай 1: один или ноль потомков
             if (!node->left) {
                 tnode* right = node->right;
                 delete node;
@@ -104,7 +125,6 @@ private:
                 return left;
             }
     
-            // случай 2: два потомка
             tnode* min_node = find_min_node(node->right);
             node->data = min_node->data;
             node->right = remove_r(node->right, min_node->data, found);

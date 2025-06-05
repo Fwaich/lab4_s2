@@ -7,6 +7,7 @@ template <typename T>
 class TreeTraversal {
 public:
     virtual void traverse(TreeNode<T>* root, std::vector<TreeNode<T>*>& result) = 0;
+    virtual TreeTraversal<T>* clone() = 0;
     virtual ~TreeTraversal() = default;
 };
 
@@ -19,6 +20,10 @@ public:
         result.push_back(node);
         traverse(node->right, result);
     }
+
+    TreeTraversal<T>* clone() override {
+        return new InOrderTraversal<T>();
+    }
 };
 
 template <typename T>
@@ -30,6 +35,10 @@ public:
         traverse(node->left, result);
         traverse(node->right, result);
     }
+
+    TreeTraversal<T>* clone() override {
+        return new PreOrderTraversal<T>();
+    }
 };
 
 template <typename T>
@@ -40,5 +49,9 @@ public:
         traverse(node->left, result);
         traverse(node->right, result);
         result.push_back(node);
+    }
+
+    TreeTraversal<T>* clone() override {
+        return new PostOrderTraversal<T>();
     }
 };
