@@ -43,10 +43,10 @@ $(BIN)/gui: $(GUIOBJ) core
 	$(CXX)  $(GUIOBJ) $(LIBFLAGS) -o $@
 
 
-run: test
+runtests: test
 	./$(BIN)/tests
 
-runt: gui
+run: gui
 	./$(BIN)/gui
 
 clean: 
