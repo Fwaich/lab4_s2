@@ -5,7 +5,6 @@
 #include "core/TraversalAdapter.hpp"
 #include "core/IntAdapter.hpp"
 #include "core/DoubleAdapter.hpp"
-#include "core/StringAdapter.hpp"
 
 int main() {
 
@@ -29,12 +28,12 @@ int main() {
     Sequence<int>* b = a->extract_subtree(1);
     std::cout << b->to_string() << std::endl;
 
-    ITraversal* tr = new TreeTraversalAdapter(new InOrderTraversal<std::string>);
+    ITraversal* tr = new TreeTraversalAdapter(new PostOrderTraversal<double>);
     std::cout << tr << std::endl;
-    Adapter* ad = new StringAdapter(new TreeSequence<std::string>());
-    std::string str = "b";
+    Adapter* ad = new DoubleAdapter(new TreeSequence<double>());
+    std::string str = "21.3";
     ad->add(str);
-    ad->add("a");
+    ad->add("23.5");
     ad->set_traversal(tr);
     std::cout << ad->to_string() << std::endl;
         

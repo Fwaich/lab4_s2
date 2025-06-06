@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include "core/Traversal.hpp"
 #include "core/BinaryTree.hpp"
 #include "core/Sequence.hpp"
 
