@@ -50,6 +50,10 @@ private:
    void OnSelectPreOrderTraversal(wxCommandEvent& event);
    void OnSelectPostOrderTraversal(wxCommandEvent& event);
 
+   void OnSelectTraversalIn(wxCommandEvent& event);
+   void OnSelectTraversalPre(wxCommandEvent& event);
+   void OnSelectTraversalPost(wxCommandEvent& event);
+
    void OnSelectTypeInt(wxCommandEvent& event);
    void OnSelectTypeDouble(wxCommandEvent& event);
    void OnSelectTypeString(wxCommandEvent& event);
@@ -61,7 +65,8 @@ private:
 
    void UpdateDisplay();
    void UpdateLayout();
-   void RecreateAdapter();
+   void ChangeType();
+   void ChangeTraversal();
 
 public:
 

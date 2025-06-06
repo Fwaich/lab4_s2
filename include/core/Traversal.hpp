@@ -1,5 +1,6 @@
 #pragma once
 #include <functional> 
+#include "core/exceptions.hpp"
 #include "core/BinaryTree.hpp"
 #include "core/TreeNode.hpp"
 

@@ -5,6 +5,12 @@
 #include "core/Traversal.hpp"
 #include "core/TreeIterator.hpp"
 
+template<typename T>
+class TreeTraversal;
+
+template<typename T>
+class InOrderTraversal;
+
 template <typename T>
 class BinaryTree {
 public:
@@ -36,7 +42,7 @@ public:
         bool found = false;
         root = remove_r(root, value, found);
         if (!found) {
-            throw std::runtime_error("Element not found");
+            throw no_such_element();
         }
     }
 

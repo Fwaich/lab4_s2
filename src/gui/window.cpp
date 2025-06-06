@@ -59,7 +59,7 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "WX") {
 
     wxBoxSizer* searchBox = new wxBoxSizer(wxVERTICAL);
     searchBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Search"), 0, wxALL, 5);
-    searchBox->Add(new wxButton(buttonPanel, ID_Contains, "Set"), 0, wxALL, 5);
+    searchBox->Add(new wxButton(buttonPanel, ID_Contains, "Contains"), 0, wxALL, 5);
 
     wxBoxSizer* subsBox = new wxBoxSizer(wxVERTICAL);
     subsBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Subs"), 0, wxALL, 5);
@@ -100,10 +100,11 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "WX") {
     // Bind(wxEVT_BUTTON, &MyFrame::OnShowSub, this, ID_ShowSub);
     // Bind(wxEVT_BUTTON, &MyFrame::OnMap, this, ID_Map);
 
-    Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
-    // Bind(wxEVT_MENU, &MyFrame::OnSelectStructArray, this, ID_Struct_Array);
-    // Bind(wxEVT_MENU, &MyFrame::OnSelectStructList, this, ID_Struct_List);
-    // Bind(wxEVT_MENU, &MyFrame::OnSelectTypeInt, this, ID_Type_Int);
-    // Bind(wxEVT_MENU, &MyFrame::OnSelectTypeDouble, this, ID_Type_Double);
-    // Bind(wxEVT_MENU, &MyFrame::OnSelectTypeString, this, ID_Type_String);
+    // Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
+    Bind(wxEVT_MENU, &MyFrame::OnSelectTypeInt, this, ID_Type_Int);
+    Bind(wxEVT_MENU, &MyFrame::OnSelectTypeDouble, this, ID_Type_Double);
+    Bind(wxEVT_MENU, &MyFrame::OnSelectTypeString, this, ID_Type_String);
+    Bind(wxEVT_MENU, &MyFrame::OnSelectTraversalIn, this, ID_InOrderTraversal);
+    Bind(wxEVT_MENU, &MyFrame::OnSelectTraversalPre, this, ID_PreOrderTraversal);
+    Bind(wxEVT_MENU, &MyFrame::OnSelectTraversalPost, this, ID_PostOrderTraversal);
 }

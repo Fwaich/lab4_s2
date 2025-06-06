@@ -1,7 +1,7 @@
 #include "core/exceptions.hpp"
 
-const char* array_out_of_range::what() const noexcept{
-    return "index out of array";
+const char* no_such_element::what() const noexcept{
+    return "no such element";
 }
 
 const char* list_out_of_range::what() const noexcept{

@@ -2,6 +2,9 @@
 #include "core/Traversal.hpp"
 #include "core/TreeNode.hpp"
 
+template<typename T>
+class TreeTraversal;
+
 template <typename T>
 class TreeIterator {
     std::vector<TreeNode<T>*> nodes;
