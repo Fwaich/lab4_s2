@@ -19,7 +19,10 @@ enum ButtonIDs {
    ID_Remove,
    ID_Set_Traversal,
    ID_Contains,
-   ID_Extract_Subtree
+   ID_Extract_Subtree,
+   ID_Map,
+   ID_Where,
+   ID_Show_Subtree
 };
 
 enum DataType {INT, DOUBLE, STRING};
@@ -53,14 +56,18 @@ private:
    void OnSelectTraversalIn(wxCommandEvent& event);
    void OnSelectTraversalPre(wxCommandEvent& event);
    void OnSelectTraversalPost(wxCommandEvent& event);
-
+   
    void OnSelectTypeInt(wxCommandEvent& event);
    void OnSelectTypeDouble(wxCommandEvent& event);
    void OnSelectTypeString(wxCommandEvent& event);
-
+   
    void OnAdd(wxCommandEvent& event);
    void OnRemove(wxCommandEvent& event);
    void OnContains(wxCommandEvent& event);
+   void OnGetSub(wxCommandEvent& event);
+   void OnMap(wxCommandEvent& event);
+   void OnWhere(wxCommandEvent& event);
+   void OnShowSub(wxCommandEvent& event);
 
 
    void UpdateDisplay();

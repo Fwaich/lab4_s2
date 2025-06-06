@@ -56,22 +56,23 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "WX") {
     baseBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Basic"), 0, wxALL, 5);
     baseBox->Add(new wxButton(buttonPanel, ID_Add, "Add"), 0, wxALL, 5);
     baseBox->Add(new wxButton(buttonPanel, ID_Remove, "Remove"), 0, wxALL, 5);
+    baseBox->Add(new wxButton(buttonPanel, ID_Contains, "Contains"), 0, wxALL, 5);
 
-    wxBoxSizer* searchBox = new wxBoxSizer(wxVERTICAL);
-    searchBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Search"), 0, wxALL, 5);
-    searchBox->Add(new wxButton(buttonPanel, ID_Contains, "Contains"), 0, wxALL, 5);
+    wxBoxSizer* advancedBox = new wxBoxSizer(wxVERTICAL);
+    advancedBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Advanced"), 0, wxALL, 5);
+    advancedBox->Add(new wxButton(buttonPanel, ID_Map, "Map"), 0, wxALL, 5);
+    advancedBox->Add(new wxButton(buttonPanel, ID_Where, "Where"), 0, wxALL, 5);
 
     wxBoxSizer* subsBox = new wxBoxSizer(wxVERTICAL);
     subsBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Subs"), 0, wxALL, 5);
     subsBox->Add(new wxButton(buttonPanel, ID_Extract_Subtree, "Get Subtree"), 0, wxALL, 5);
-    // subsBox->Add(new wxButton(buttonPanel, ID_ShowSub, "Show Subtree"), 0, wxALL, 5);
+    subsBox->Add(new wxButton(buttonPanel, ID_Show_Subtree, "Show Subtree"), 0, wxALL, 5);
 
     // wxBoxSizer* funcsBox = new wxBoxSizer(wxVERTICAL);
     // funcsBox->Add(new wxStaticText(buttonPanel, wxID_ANY, "Funcs"), 0, wxALL, 5);
-    // funcsBox->Add(new wxButton(buttonPanel, ID_Map, "Map"), 0, wxALL, 5);
 
     hbox->Add(baseBox, 1, wxEXPAND | wxALL, 10);
-    hbox->Add(searchBox, 1, wxEXPAND | wxALL, 10);
+    hbox->Add(advancedBox, 1, wxEXPAND | wxALL, 10);
     hbox->Add(subsBox, 1, wxEXPAND | wxALL, 10);
     // hbox->Add(funcsBox, 1, wxEXPAND | wxALL, 10);
 
@@ -91,16 +92,11 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "WX") {
     Bind(wxEVT_BUTTON, &MyFrame::OnAdd, this, ID_Add);
     Bind(wxEVT_BUTTON, &MyFrame::OnRemove, this, ID_Remove);
     Bind(wxEVT_BUTTON, &MyFrame::OnContains, this, ID_Contains);
+    Bind(wxEVT_BUTTON, &MyFrame::OnGetSub, this, ID_Extract_Subtree);
+    Bind(wxEVT_BUTTON, &MyFrame::OnMap, this, ID_Map);
+    Bind(wxEVT_BUTTON, &MyFrame::OnWhere, this, ID_Where);
+    Bind(wxEVT_BUTTON, &MyFrame::OnShowSub, this, ID_Show_Subtree);
 
-    // Bind(wxEVT_BUTTON, &MyFrame::OnGet, this, ID_Get);
-    // Bind(wxEVT_BUTTON, &MyFrame::OnGetFirst, this, ID_GetFirst);
-    // Bind(wxEVT_BUTTON, &MyFrame::OnGetLast, this, ID_GetLast);
-    // Bind(wxEVT_BUTTON, &MyFrame::OnGetSize, this, ID_GetSize);
-    // Bind(wxEVT_BUTTON, &MyFrame::OnGetSub, this, ID_GetSub);
-    // Bind(wxEVT_BUTTON, &MyFrame::OnShowSub, this, ID_ShowSub);
-    // Bind(wxEVT_BUTTON, &MyFrame::OnMap, this, ID_Map);
-
-    // Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_MENU, &MyFrame::OnSelectTypeInt, this, ID_Type_Int);
     Bind(wxEVT_MENU, &MyFrame::OnSelectTypeDouble, this, ID_Type_Double);
     Bind(wxEVT_MENU, &MyFrame::OnSelectTypeString, this, ID_Type_String);

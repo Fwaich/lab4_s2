@@ -1,6 +1,7 @@
 #pragma once
 #include <sstream>
 #include <functional>
+#include "core/exceptions.hpp"
 #include "core/TreeNode.hpp"
 #include "core/Traversal.hpp"
 #include "core/TreeIterator.hpp"
@@ -61,11 +62,51 @@ public:
         return false;
     }
 
+    void map(const double& factor) {
+        if (!root) throw data_is_null(); 
+
+        auto it = iterator();
+        while (it.has_next()) {
+            T& value = it.next();
+
+            if constexpr (std::is_same_v<T, std::string>) {
+                for (char& c : value) {
+                    c = std::toupper(static_cast<unsigned char>(c));
+                }
+            } else {
+                value *= factor;
+            }
+        }
+    }
+
+    void where(std::string value) {
+        if (!root) throw data_is_null();
+    
+        auto it = iterator();
+        while (it.has_next()) {
+            T& current = it.next();
+            std::string str;
+
+            if constexpr (std::is_arithmetic_v<T>) {
+                str = std::to_string(current);
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                str = current;
+            }
+
+            if (str.find(value) != std::string::npos) {
+                if constexpr (std::is_arithmetic_v<T>)
+                    current = 0;
+                else if constexpr (std::is_same_v<T, std::string>)
+                    current = "";
+            }
+        }
+    }
+    
+
     BinaryTree<T>* extract_subtree(const T& value) {
+        if (!root) throw data_is_null();
         tnode* target_node = find_node_r(root, value);
-        if (!target_node) throw std::runtime_error(
-            "Element not found for subtree extraction"
-        );
+        if (!target_node) throw no_such_element();
         BinaryTree<T>* subtree = new BinaryTree<T>(traversal->clone());
         subtree->root = clone_subtree_r(target_node);
         return subtree;

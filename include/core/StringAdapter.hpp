@@ -39,6 +39,16 @@ public:
         return sequence->contains(str_value);
     }
 
+    StringAdapter* map(const double& factor) override {
+        sequence->map(0);
+        return this;
+    }
+
+    StringAdapter* where(std::string value) override {
+        sequence->where(value);
+        return this;
+    }
+
     StringAdapter* extract_subtree(std::string str_value) override {
         Sequence<std::string>* tree = sequence->extract_subtree(str_value);
         StringAdapter* subtree =  new StringAdapter(tree);

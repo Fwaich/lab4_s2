@@ -37,6 +37,16 @@ public:
         return tree->contains(value);
     }
 
+    Sequence<T>* map(const double& factor) override {
+        tree->map(factor);
+        return this;
+    }
+
+    Sequence<T>* where(std::string value) override {
+        tree->where(value);
+        return this;
+    }
+
     Sequence<T>* extract_subtree(const T& value) const override {
         BinaryTree<T>* subtree = tree->extract_subtree(value);
         return new TreeSequence<T>(subtree);

@@ -12,6 +12,8 @@ public:
     virtual Sequence<T>* set_traversal(TreeTraversal<T>* new_traversal) = 0;
     
     virtual bool contains(const T& value) const = 0;
+    virtual Sequence<T>* map(const double& factor) = 0;
+    virtual Sequence<T>* where(std::string value) = 0;
     virtual Sequence<T>* extract_subtree(const T& value) const = 0;
     
     virtual std::string to_string() const = 0;
